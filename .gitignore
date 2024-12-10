@@ -1,0 +1,8 @@
+
+#Gitignore for latex
+*.aux
+*.bbl
+*.blg
+
+#folder
+prerequisities/
