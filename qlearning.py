@@ -15,7 +15,7 @@ env.seed(321)
 
 # Whether to perform training or use the stored .npy file
 MODE = "TRAINING"  # TRAINING, TEST
-SCHEDULE = "ZERO_FIFTY"  # CONSTANT, GLIE, ZERO, ZERO_FIFTY
+SCHEDULE = "CONSTANT"  # CONSTANT, GLIE, ZERO, ZERO_FIFTY
 episodes = 20000
 test_episodes = 100
 num_of_actions = 2  # 2 discrete actions for Cartpole
@@ -85,7 +85,7 @@ def get_cell_index(state):
     return x, v, th, av
 
 
-def get_action(state, q_values, epsilon, greedy=False):
+def get_action(state, q_values, epsilon, num_of_actions=2, greedy=False):
     """
     Returns the action to take in a state using epsilon-greedy policy
     Args:
@@ -226,14 +226,19 @@ def plot_heatmap(heatmap, title, x_min, x_max, y_min, y_max, path=None):
         cmap="viridis",
     )
     plt.colorbar(label="Value Function")
-    plt.xlabel("Position (x)") 
-    plt.ylabel("Velocity (v)") # Angle of the pole
+    plt.xlabel("Position (x)")
+    plt.ylabel("Velocity (v)")  # Angle of the pole
     plt.title(title)
     if path is not None:
         plt.savefig(path)
         print("Heatmap saved to", path)
     else:
         plt.show()
+
+
+def save_model(path, q_values):
+    np.save(path, q_values)
+    print("Model saved to", path)
 
 
 model = name_exp(SCHEDULE, constant_eps)
@@ -298,26 +303,27 @@ if MODE == "TEST":
     sys.exit()
 
 # Save the Q-value array
-np.save("./data/model/q_values_" + model + ".npy", q_grid)
-print("Q-values saved to ./data/model/q_values_" + model + ".npy")
+save_model("./data/model/q_values_" + model + ".npy", q_grid)
 
-np.save("./data/model/q_values_initial_" + model + ".npy", q_grid_initial)
-print("Q-values saved to ./data/model/q_values_initial_" + model + ".npy")
+save_model("./data/model/q_values_initial_" + model + ".npy", q_grid_initial)
 
-np.save("./data/model/q_values_after_one_episode_" + model + ".npy", q_grid_after_one_episode)
-print("Q-values saved to ./data/model/q_values_after_one_episode_" + model + ".npy")
+save_model(
+    "./data/model/q_values_after_one_episode_" + model + ".npy",
+    q_grid_after_one_episode,
+)
 
-np.save("./data/model/q_values_halfway_" + model + ".npy", q_grid_halfway)
-print("Q-values saved to ./data/model/q_values_halfway_" + model + ".npy")
+save_model("./data/model/q_values_halfway_" + model + ".npy", q_grid_halfway)
 
 # Plot the learning curve
 plt.plot(ep_lengths)
 plt.plot(epl_avg)
 plt.xlabel("Episodes")
-plt.ylabel("Episode Length")
-plt.title("Episode Length over Time")
-plt.legend(["Episode Length", "500 Episode Average"])
-
+plt.ylabel("Reward")
+plt.title("Reward per Episode")
+plt.legend(["Reward Length", "500 Reward Average"])
+plt.grid()
+plt.xlim(0, episodes + test_episodes)
+plt.ylim(0, 210)
 # Save the plot
 plt.savefig("data/plot/q_learning_" + model + ".png")
 print("Plot saved to data/plot/q_learning_" + model + ".png")
@@ -333,8 +339,8 @@ plot_heatmap(
     "Value Function",
     x_min,
     x_max,
-    v_min,
-    v_max,
+    th_min,
+    th_max,
     path="./data/plot/heatmap_full_training_" + model + ".png",
 )
 
@@ -347,8 +353,8 @@ plot_heatmap(
     "Value Function after One Episode",
     x_min,
     x_max,
-    v_min,
-    v_max,
+    th_min,
+    th_max,
     path="./data/plot/heatmap_initial_training_" + model + ".png",
 )
 
@@ -360,8 +366,8 @@ plot_heatmap(
     "Value Function after One Episode",
     x_min,
     x_max,
-    v_min,
-    v_max,
+    th_min,
+    th_max,
     path="./data/plot/heatmap_after_one_episode_" + model + ".png",
 )
 

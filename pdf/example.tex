@@ -65,8 +65,7 @@
 %===============================================================================
 
 \begin{abstract}
-This article is part of a series of three articles for the Reinforcement Learning course in Politecnico di torino. 
-In this article, the second one, we analyze the potentiality of the q-learning in the context of open AI gym, specifically in the Cart Pole changing different value of epsilon and different initialization of the q-table. 
+This article is the second in a series of three for the Reinforcement Learning laboratory course at Politecnico di Torino. In this installment, we explore the potential of Q-learning within the OpenAI Gym environment, focusing on the CartPole problem. Our analysis includes experiments with different epsilon values and various Q-table initialization strategies. 
 
 \end{abstract}
 
@@ -77,7 +76,7 @@ In this article, the second one, we analyze the potentiality of the q-learning i
 
 \section{Introduction}
 \subsection{The system - CartPole-v0}
-CartPole-v0 system from OpenAI is part of the classic control environment and it's been used the sample code provided by \href{https://www.polito.it/personale?p=andrea.protopapa}{Andrea Protopapa} in the course of Reinforcement Learning. Information about this system is sourced from the official documentation \cite{Cart_pole} and its GitHub repository. Below is the definition provided by the authors for CartPole-v0\\ \\
+CartPole-v0 system from OpenAI is part of the classic control environment. The starting code it's been provided by \href{https://www.polito.it/personale?p=andrea.protopapa}{Andrea Protopapa} in the course of Reinforcement Learning. Information about this system is sourced from the official documentation \cite{Cart_pole} and its GitHub repository. Below is the definition provided by the authors for CartPole-v0\\ \\
 \textit{This environment corresponds to the version of the cart-pole problem described by Barto, Sutton, and Anderson in “Neuronlike Adaptive Elements That Can Solve Difficult Learning Control Problem”. A pole is attached by an un-actuated joint to a cart, which moves along a frictionless track. The pendulum is placed upright on the cart and the goal is to balance the pole by applying forces in the left and right direction on the cart.\citep{Cart_pole}}
 
 \begin{figure}[h]
@@ -86,6 +85,9 @@ CartPole-v0 system from OpenAI is part of the classic control environment and it
 	\caption{Graphical explation about the whole system}
 	\label{fig:plot1}
 \end{figure}
+
+\newpage
+
 The observation is a four element vector: 
 \begin{figure}[h]
 	\centering
@@ -114,7 +116,7 @@ As the agent can’t do both at the same time, there is a trade-off. Initially t
 
 \subsubsection{$\epsilon$ greedy}
 In Q-learning, we select an action based on its reward. The agent always chooses the optimal action. Hence, it generates the maximum reward possible for the given state.\\
-In epsilon-greedy policy, the agent uses both exploitations to take advantage of prior knowledge and exploration to look for new options \ref{fig:expl}.
+In epsilon-greedy policy, the agent uses both exploitations to take advantage of prior knowledge and exploration to look for new options. In the figure \ref{fig:expl}, it is possible to observe how the two actions are determined.
 
 The epsilon-greedy approach selects the action with the highest estimated reward most of the time. The aim is to have a balance between exploration and exploitation. Exploration allows us to have some room for trying new things, sometimes contradicting what we have already learned.  
 
@@ -128,27 +130,23 @@ As we’ve discussed above, usually the optimal action, i.e., the action with th
 	\label{fig:expl}
 \end{figure}
 
-\subsubsection{Heatmap}
-To analyze the current state of the analyzed system it's possible to used an heatmap. The heatmap depicts values for a main variable of interest across two axis variables as a grid of colored squares. The axis variables are divided into ranges like a bar chart or histogram, and each cell’s color indicates the value of the main variable in the corresponding cell range \cite{heatmap}. \\ 
-
-High-Value Regions:
-•	Represent states where the agent expects to receive high cumulative rewards.
-•	For example, in the cart-pole problem:
-•	States near the upright position (balanced pole) with low velocity and angular velocity likely have higher values.
-
-Low-Value Regions:
-•	Represent states leading to termination or failure (e.g., the pole falling or the cart moving out of bounds).
-•	For the cart-pole, states with extreme angles or high velocities might have low values.
-
- 
-
 \subsubsection{GLIE - greedy in limit with infinite exploration}
--	Each action is executed infinitely often in every state that is visited infinitely often;
--	In the limit, the learning policy is greedy with respect to the Q-value function with probability 1
+GLIE (Greedy in the Limit with Infinite Exploration) ensures that each action is executed infinitely often in every state that is visited infinitely often, allowing for comprehensive exploration of the environment. Over time, the learning policy converges to a greedy approach with respect to the Q-value function, achieving optimal behavior with a probability of 1.
 
-\section{Process - Another name}
-\subsection{Epsilon value}
-During this expirement we developed three different stategies that we are going to compare, in this subsection we are going to compare the first two. The first one with a costant epsilon  ($\epsilon =  0.2$) while the second with the following formula \ref{formula:epsilon} such that epsilon reaches 0.1 after k=20000 episodes (round b to nearest integer). In order to do this we have set the value of b as 2221 and in the end of the glie schedule we'll have epsilon exactly equal to $0.09995049727735025$
+%Each action is executed infinitely often in every state that is visited infinitely often;
+%In the limit, the learning policy is greedy with respect to the Q-value function with probability 1
+% https://users.ece.cmu.edu/~yuejiec/ece18813B_notes/lecture10-online-RL-GLIE.pdf
+
+\subsubsection{Heatmap}
+To analyze the current state of the system under study, a heatmap can be utilized. The heatmap depicts values for a main variable of interest across two axis variables as a grid of colored squares. The axis variables are divided into ranges like a bar chart or histogram, and each cell’s color indicates the value of the main variable in the corresponding cell range \cite{heatmap}. \\ 
+
+Each cell can represent different states, ranging from high-value regions, which correspond to states where the agent expects to achieve high cumulative rewards (e.g., states near the upright pole position with low velocity and angular velocity), to low-value regions, which represent states likely to lead to termination or failure (e.g., the pole falling or the cart moving out of bounds).
+
+
+\section{Methodology}
+
+\subsection{Epsilon}
+They're been developed three different strategies, two of which will be compared in the following paragraph. The first strategy uses a constant epsilon value of 0.2  ($\epsilon =  0.2$) while the second employs the following formula (Equation \ref{formula:epsilon} where epsilon decreases to 0.1 after 20.000 episodes. To achieve this, we set the value of b to 2221, which ensures that at the end of the GLIE schedule, epsilon will be approximately equal to $0.09995049727735025$
 
 \centering
 \label{formula:epsilon}
@@ -157,50 +155,49 @@ $ e_k = b / (b+k) $
 \flushleft
 
 \subsubsection{Fixed $\epsilon$ vs GLIE epsilon schedule}
-Speaking about the performance between a fixed epsilon vs. the GLIE epsilon schedule 
+When comparing the performance of a fixed epsilon \ref{fig:costant_eps} versus the GLIE epsilon schedule \ref{fig:glie_eps}, there is not much difference between the two. Overall, the second strategy (with the GLIE epsilon schedule) starts with a lower reward, but ultimately achieves a higher one
 
-Plot the return obtained at each training episode, to view how the training process has
-progressed
+Looking at the testing render, it is evident that the GLIE schedule leads to more frequent successful episodes compared to the fixed epsilon strategy, with the agent managing to keep the pole stable for longer durations. However, the performance is still not perfect, as the agent frequently fails to maintain stability.
 
-Looking at the testing render you can see an improvement compared to the fixed epsilon so there is an higher change see the pole mantain the stability, but it's not perfect anyway.
+%Speaking about the performance between a fixed epsilon vs. the GLIE epsilon schedule, there is no much difference between them. Overall the second reward \ref{glie_eps} is initially lower but it finally achieve an higher one. 
+%Looking at the testing render you can see an improvement compared to the fixed epsilon it happen more times than the first to arrive at the end of the episode succeding in mantaining the pole stable, but it's not perfect anyway.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\linewidth]{../data/plot/q_learning_constant_0.2.png}
-	\caption{Return obtained at each training episode - $\epsilon = 2$}
+	\caption{Reward obtained - $\epsilon = 2$}
 	\label{fig:costant_eps}
 \end{figure}
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\linewidth]{../data/plot/q_learning_GLIE.png}
-	\caption{Return obtained at each training episode - $\epsilon$ get from the formula \ref{formula:epsilon}}
+	\caption{Reward obtained - Formula \ref{formula:epsilon}}
 	\label{fig:glie_eps}
 \end{figure}
 
 \subsection{Value function}
-After computing the associated value function  $d$ we generate the heatmap of the computed value function in terms of $ x $ and $\dot{\theta}$, (the current position of the cart and the pole angle) and therefore average the values
-over $\dot{x} $ and $\dot{\theta} $ for plotting.
+After computing the associated value function, the heatmap of the computed value function in terms of $ x $ and $\dot{\theta}$,(the current position of the cart and the pole angle) was generated. To plot this, the values were averaged over $\dot{x} $ and $\dot{\theta} $.
 
+Analyzing  the full training heatmaps, one for the constant epsilon strategy (Figure  \ref{fig:heatmap_costant_full}) and the other for the GLIE schedule (Figure \ref{fig:heatmap_glie_full}), it is clear that the agent has effectively learned the optimal policy. The heatmaps are smooth and clear, with distinct high-value regions corresponding to optimal states or policies. 
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_full_training_constant_0.2.png}
 	\caption{Heatmap image for q-learning with costant epsilon}
-	\label{fig:plot1}
+	\label{fig:heatmap_costant_full}
 \end{figure}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_full_training_GLIE.png}
 	\caption{Heatmap image for q-learning with glie epsilon schedule}
-	\label{fig:plot1}
+	\label{fig:heatmap_glie_full}
 \end{figure}
 
-After the full training The agent has effectively learned the optimal policy and accurately estimates V(s) and the heatmap is clear and smooth, with distinct high-value regions corresponding to optimal states or policies.
+Next, the focus will be on analyzing the constant epsilon case, specifically examining the Q-value heatmap at different stages of the training: before training, after a single episode, and after half of the episodes.
 
-Now, we can take into consideration other states in which you can analyze the system.
+Although the heatmaps differ across the different value of epsilon, the general trend is consistent. These heatmaps can be found in the data/plots folder for further analysis.
 
-\pagebreak
 
 \subsubsection{Before training}
 Before training the heatmap is likely flat, with no clear structure. All state-action pairs have equal zero Q -values, meaning  the value function is uniform across states. The agent has no prior knowledge of the environment.
@@ -209,55 +206,70 @@ Before training the heatmap is likely flat, with no clear structure. All state-a
 	\centering
 	\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_initial_training_constant_0.2.png}
 	\caption{Heatmap in the initial state}
-	\label{fig:plot1}
+	\label{fig:heatmap_init}
 \end{figure}
 
 \subsubsection{After one episode}
-Some regions of the heatmap may start showing slightly higher values, particularly in states visited during the episode.
-•	The updates are sparse and localized around the trajectory the agent followed during the episode.
-•	Unvisited states still retain their initial values. the agent updates the Q-values for the specific states and actions it encountered, improving its estimate of  V(s)  in those regions.
-•	Most of the state space remains unexplored, leading to minimal structure in the heatmap.
+After one episode some regions of the heatmap may begin to show slightly higher values, particularly in states visited during the episode. The updates are sparse and localized around the trajectory the agent followed during the episode. 
+Unvisited states retain their initial values, while the agent updates the Q-values for the specific states and actions it encountered, thereby improving its estimate of  V(s)  in those regions.
+As a result, most of the state space remains unexplored, leading to minimal structure in the heatmap. See figure \ref{fig:heatmap_costant_init}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_after_one_episode_constant_0.2.png}
-	\caption{Heatmap in the initial state}
-	\label{fig:plot1}
+	\caption{Heatmap after one single episode}
+	\label{fig:heatmap_costant_init}
 \end{figure}
 
 \subsubsection{Half-way training}
-The heatmap begins to take shape, showing a clearer distinction between “good” and “bad” states.
-•	High-value regions correspond to states closer to the goal or those leading to higher rewards.
-•	Low-value regions reflect states where the agent expects poor outcomes or failures.
-•	Some areas might still be noisy or less structured, especially in underexplored regions.
+The heatmap begins to take shape, revealing a clearer distinction between “good” and “bad” states. High-value regions correspond to states that are closer to the goal or lead to higher rewards, while low-value regions represent states where the agent anticipates poor outcomes or failures. Some areas may still appear noisy or less structured, particularly in regions that have been underexplored. See figure \ref{fig:heatmap_costant_half}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_halfway_constant_0.2.png}
 	\caption{Halfway Training Heatmap}
-	\label{fig:plot1}
+	\label{fig:heatmap_costant_half}
 \end{figure}
 
 
 \subsection{Epsilon zero}
-What's the meaning in setting epsilon zero? There is not exploration stage, it will always use an known action. No reason to do this
-In this subsection we experiment epsilon equal to zero in two different casisticts:
+The final strategy analyzed in this article involves setting epsilon to 0. With epsilon set to 0, there is no exploration, meaning the agent relies solely on its current knowledge without attempting to discover new states or actions. Without exploration, there is no guarantee that the agent can sufficiently learn the environment to identify the optimal policy.
+In this subsection, the scenario of epsilon equal to zero is examined under two different cases:
 \begin{itemize}
 	\item keeping the initial Q-function values at zero;
 	\item setting the initial Q-function values at 50 for all states and actions;
 \end{itemize}
 
+\subsubsection{Performance}
+The performance is poor in both cases; however, the strategy with higher initialization yields slightly better results, with longer episode durations.
+
 - In which case does the model perform better?
 - Why is this the case? How does the initialization of Q values aﬀect exploration?
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_full_training_zero_epsilon.png}
+	\caption{Full training Heatmap with epsilon zero}
+	\label{fig:heatmap_zero}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_full_training_zero_epsilon_fifty_initial.png}
+	\caption{Full training Heatmap with epsilon zero and Q values initialized at 50}
+	\label{fig:heatmap_zero}
+\end{figure}
+
+\newpage
 
 \section{Q-Learning : Different applications}
 
 \subsection{Continuous state spaces}
 Q-learning can be adapted for environments with continuous state spaces, but it requires some modifications because the algorithm inherently relies on a discrete state-action table. A common approaches for continuous State spaces
-is to use a state discretization, as it's been done in this article.
-•	Divide the continuous state space into discrete bins (grids).
-•	Each bin represents a discrete state, and standard Q-learning operates on this discretized state space.
-There is an important thing to notice that discretization can lead to loss of precision and suffers from the “curse of dimensionality”\cite{article} in high-dimensional spaces.
-To overcome this problem there is an alternative that involves the use of the function approximators (e.g., neural networks, decision trees, or linear regression) to represent the Q-function Q(s, a) instead of a table. This permits to handles continuous state spaces directly without discretization and scales better to high dimensions. This is the foundation of Deep Q-Learning (DQN), where neural networks approximate Q(s, a).
-
+is to use a state discretization, as it's been done in this article. \\
+It is important to note that discretization can result in a loss of precision and is particularly affected by the “curse of dimensionality”\cite{BELLMAN1958228} in high-dimensional spaces. \\
+To overcome this problem there is an alternative that involves the use of the function approximators (e.g., neural networks, decision trees, or linear regression) to represent the Q-function Q(s, a) instead of a table. This permits to handles continuous state spaces directly without discretization and scales better to high dimensions and it's the foundation of Deep Q-Learning (DQN), where neural networks approximate $ Q(s, a) $.
+ 
+% Divide the continuous state space into discrete bins (grids).
+% Each bin represents a discrete state, and standard Q-learning operates on this discretized state space.
 \subsection{Continuous action spaces}
 Risposta da dare studiando molto di più.
 
@@ -267,12 +279,7 @@ Risposta da dare studiando molto di più.
 
 \section{Conclusion}
 
-Domande: 
-perchè faccio l'average sugli altri due dati. Non capisco.
-E' giusto che comunque faccia schifo i primi due, quello costante e quello con la formula. Con la formula migliora, ma non così tanto. Vuol dire che non sta trovando la policy ottimale?
-
-Quale heatmap devo analizzare? E' uguale tanto il pattern dovrebbe essere sempre quello indipendente dall'epsilon impostato. Prima poi, poi sempre un po' di più.
-
+Domande non chieste:
 Standard deviation è molto alta sempre mi sa.
 
 \label{sec:conclusion}
