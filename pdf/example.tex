@@ -162,7 +162,7 @@ $ e_k = b / (b+k) $
 \flushleft
 
 \subsubsection{Fixed $\epsilon$ vs GLIE epsilon schedule}
-When comparing the performance of a fixed epsilon \ref{fig:costant_eps} versus the GLIE epsilon schedule \ref{fig:glie_eps}, there is not much difference between the two. Overall, the second strategy (with the GLIE epsilon schedule) starts with a lower reward, but ultimately achieves a higher one
+When comparing the performance of a fixed epsilon (Figure \ref{fig:costant_eps}) versus the GLIE epsilon schedule (Figure \ref{fig:glie_eps}), there is not much difference between the two. Overall, the second strategy (with the GLIE epsilon schedule) starts with a lower reward, but ultimately achieves a higher one
 
 Looking at the testing render, it is evident that the GLIE schedule leads to more frequent successful episodes compared to the fixed epsilon strategy, with the agent managing to keep the pole stable for longer durations. However, the performance is still not perfect, as the agent frequently fails to maintain stability.
 
@@ -279,6 +279,7 @@ In this subsection, the scenario of epsilon equal to zero is examined under two 
 \end{itemize}
 
 \subsubsection{Performance}
+Change the initialization introduce centainlty some bias.
 If Q-values are initialized to 50, the agent assumes it can achieve high rewards from all state-action pairs initially and the convergence will be slower because the updates of the Q-values will take longer to overwrite the inflated values.
 
 The performance is poor in both cases; however, the strategy with higher initialization yields slightly better results, with longer episode durations. 
@@ -311,6 +312,7 @@ To overcome this problem there is an alternative that involves the use of the fu
 % Each bin represents a discrete state, and standard Q-learning operates on this discretized state space.
 \subsection{Continuous action spaces}
 % https://ai.stackexchange.com/questions/12255/can-q-learning-be-used-for-continuous-state-or-action-spaces
+% https://www.quora.com/Why-doesn-t-Q-learning-work-with-continuous-action-spaces
 The problem is can be understood easily looking the formula, the part about the TD Target (See Figure \ref{fig:q_learning})
 The process for evaluating the maximum becomes less efficient and less accurate the larger the space that it needs to check.\\
 If your actions are continuous, and therefore infinite, you can’t just look up which action produces the maximum q-value because there are an infinite number of actions to scan.

@@ -15,7 +15,7 @@ env.seed(321)
 
 # Whether to perform training or use the stored .npy file
 MODE = "TRAINING"  # TRAINING, TEST
-SCHEDULE = "CONSTANT"  # CONSTANT, GLIE, ZERO, ZERO_FIFTY
+SCHEDULE = "GLIE"  # CONSTANT, GLIE, ZERO, ZERO_FIFTY
 episodes = 20000
 test_episodes = 100
 num_of_actions = 2  # 2 discrete actions for Cartpole
@@ -28,8 +28,8 @@ th_min, th_max = -0.3, 0.3
 av_min, av_max = -4, 4
 
 # Parameters
-gamma = 0.98
-alpha = 0.1
+gamma = 0.98 # Discount factor
+alpha = 0.1 # Learning rate
 constant_eps = 0.2  # Epsilon for epsilon-greedy policy
 if SCHEDULE == "ZERO" or SCHEDULE == "ZERO_FIFTY":
     constant_eps = 0
@@ -110,14 +110,14 @@ def get_action(state, q_values, epsilon, num_of_actions=2, greedy=False):
         if np.random.rand() < epsilon:
             # Random action
             # TODO: choose random action with equal probability among all actions
-            return np.random.choice(num_of_actions)  # Random action
+            return np.random.randint(0, num_of_actions)  # Random action
         else:
             # Greedy action
             # TODO: greedy w.r.t. q_grid
             return np.argmax(q_values[x, v, th, av, :])  # Best action estimated
 
 
-def update_q_value(old_state, action, new_state, reward, done, q_array):
+def update_q_value(old_state, action, new_state, reward, done, q_array, before=False):
     """
     Update Q-value of the state-action pair using the Bellman equation
     Args:
@@ -136,6 +136,7 @@ def update_q_value(old_state, action, new_state, reward, done, q_array):
 
     # Target value used for updating our current Q-function estimate at Q(old_state, action)
     if done is True:
+        reward = -300 if before else reward
         target_value = reward  # HINT: if the episode is finished, there is not next_state. Hence, the target value is simply the current reward.
     else:
         # TODO: implement the Bellman equation
@@ -145,7 +146,7 @@ def update_q_value(old_state, action, new_state, reward, done, q_array):
                 new_cell_index[1],
                 new_cell_index[2],
                 new_cell_index[3],
-                :,
+                :
             ]
         )
 
@@ -226,8 +227,8 @@ def plot_heatmap(heatmap, title, x_min, x_max, y_min, y_max, path=None):
         cmap="viridis",
     )
     plt.colorbar(label="Value Function")
-    plt.xlabel("Position (x)")
-    plt.ylabel("Velocity (v)")  # Angle of the pole
+    plt.xlabel("Position of the cart")  # Position of the cart
+    plt.ylabel("Angle of the pole")  # Angle of the pole
     plt.title(title)
     if path is not None:
         plt.savefig(path)
@@ -239,6 +240,11 @@ def plot_heatmap(heatmap, title, x_min, x_max, y_min, y_max, path=None):
 def save_model(path, q_values):
     np.save(path, q_values)
     print("Model saved to", path)
+
+def save_data(path, data):
+    #Save data to csv
+    data.to_csv(path, index=False)
+    print("Data saved to", path)
 
 
 model = name_exp(SCHEDULE, constant_eps)
@@ -266,7 +272,7 @@ for ep in range(episodes + test_episodes):
     epsilon = constant_eps  # TODO: change to GLIE schedule (task 3.1) or 0 (task 3.3)
     if SCHEDULE == "GLIE":
         epsilon = b / (b + ep)
-        print("Epsilon:", epsilon)
+        #print("Epsilon:", epsilon)
 
     total_reward = 0
     while not done:
@@ -274,10 +280,10 @@ for ep in range(episodes + test_episodes):
         new_state, reward, done, _ = env.step(action)
         total_reward += reward  # Accumulate reward
         if not test:
-            update_q_value(state, action, new_state, reward, done, q_grid)
+            update_q_value(state, action, new_state, reward, done, q_grid, before=steps < 170 and done)
         else:
-            # print('Test episode:', ep-episodes)
-            env.render()
+            print('Test episode:', ep)
+            #env.render()
 
         state = new_state
         steps += 1
@@ -291,13 +297,22 @@ for ep in range(episodes + test_episodes):
                 ep, np.mean(ep_lengths[max(0, ep - 200) :])
             )
         )
-        print("Epsilon:", epsilon)
-        print("Standard deviation:", np.std(ep_lengths[max(0, ep - 200) :]))
 
     if ep == 1:
         q_grid_after_one_episode = q_grid.copy()  # After one episode
     elif ep == episodes // 2:
         q_grid_halfway = q_grid.copy()  # Halfway through training
+
+# Print the average reward and standard deviation
+print("Average reward episodes:", np.mean(ep_lengths[:episodes]))
+print("Standard deviation episodes:", np.std(ep_lengths[:episodes]))
+
+# Print the average reward and standard deviation for the test episodes
+print("Average reward test episodes:", np.mean(ep_lengths[episodes:]))
+print("Standard deviation test episodes:", np.std(ep_lengths[episodes:]))
+
+# Save the log data
+save_data("./data/log/q_learning_" + model + ".csv", pd.DataFrame(ep_lengths))
 
 if MODE == "TEST":
     sys.exit()
@@ -336,7 +351,7 @@ value_function_2d = compute_heatmap(q_grid)
 # Plot the heatmap
 plot_heatmap(
     value_function_2d,
-    "Value Function",
+    "Value Function After Training",
     x_min,
     x_max,
     th_min,
@@ -350,7 +365,7 @@ value_function_2d = compute_heatmap(q_grid_initial)
 # Plot the heatmap
 plot_heatmap(
     value_function_2d,
-    "Value Function after One Episode",
+    "Value Function before Training",
     x_min,
     x_max,
     th_min,
