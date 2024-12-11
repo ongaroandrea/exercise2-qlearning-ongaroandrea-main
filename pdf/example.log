@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.3.12)  10 DEC 2024 19:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2022.3.12)  11 DEC 2024 13:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -395,6 +395,15 @@ File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 LaTeX Warning: Label `fig:plot1' multiply defined.
 
 
+LaTeX Warning: Label `fig:heatmap_init' multiply defined.
+
+
+LaTeX Warning: Label `fig:heatmap_costant_init' multiply defined.
+
+
+LaTeX Warning: Label `fig:heatmap_costant_half' multiply defined.
+
+
 LaTeX Warning: Label `fig:heatmap_zero' multiply defined.
 
 )
@@ -578,136 +587,159 @@ LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
 (/usr/local/texlive/2021/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 112--116
+<../data/images/Q-learning-8.png, id=103, 1405.25pt x 473.77pt>
+File: ../data/images/Q-learning-8.png Graphic file (type png)
+<use ../data/images/Q-learning-8.png>
+Package pdftex.def Info: ../data/images/Q-learning-8.png  used on input line 11
+3.
+(pdftex.def)             Requested size: 198.7425pt x 66.99965pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 119--123
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 112--116
+Underfull \hbox (badness 10000) in paragraph at lines 119--123
 
  []
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 117.
+(hyperref)                removing `math shift' on input line 124.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\epsilon' on input line 117.
+(hyperref)                removing `\epsilon' on input line 124.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 117.
+(hyperref)                removing `math shift' on input line 124.
 
-[2 <../data/images/vector.png>]
-<../data/images/exp_e.png, id=113, 344.28625pt x 397.485pt>
+[2 <../data/images/vector.png> <../data/images/Q-learning-8.png (PNG copy)>]
+<../data/images/exp_e.png, id=114, 344.28625pt x 397.485pt>
 File: ../data/images/exp_e.png Graphic file (type png)
 <use ../data/images/exp_e.png>
-Package pdftex.def Info: ../data/images/exp_e.png  used on input line 128.
+Package pdftex.def Info: ../data/images/exp_e.png  used on input line 135.
 (pdftex.def)             Requested size: 198.7425pt x 229.44974pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 141--142
+Underfull \hbox (badness 10000) in paragraph at lines 148--149
 
  []
 
-[3 <../data/images/exp_e.png>]
+
+Underfull \vbox (badness 3029) has occurred while \output is active []
+
+ [3 <../data/images/exp_e.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 157.
+(hyperref)                removing `math shift' on input line 164.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\epsilon' on input line 157.
+(hyperref)                removing `\epsilon' on input line 164.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 157.
+(hyperref)                removing `math shift' on input line 164.
 
-<../data/plot/q_learning_constant_0.2.png, id=127, 462.528pt x 346.896pt>
+<../data/plot/q_learning_constant_0.2.png, id=129, 462.528pt x 346.896pt>
 File: ../data/plot/q_learning_constant_0.2.png Graphic file (type png)
 <use ../data/plot/q_learning_constant_0.2.png>
 Package pdftex.def Info: ../data/plot/q_learning_constant_0.2.png  used on inpu
-t line 167.
+t line 174.
 (pdftex.def)             Requested size: 198.7425pt x 149.0565pt.
-<../data/plot/q_learning_GLIE.png, id=128, 462.528pt x 346.896pt>
+<../data/plot/q_learning_GLIE.png, id=130, 462.528pt x 346.896pt>
 File: ../data/plot/q_learning_GLIE.png Graphic file (type png)
 <use ../data/plot/q_learning_GLIE.png>
 Package pdftex.def Info: ../data/plot/q_learning_GLIE.png  used on input line 1
-74.
+81.
 (pdftex.def)             Requested size: 198.7425pt x 149.0565pt.
-<../data/plot/heatmap_full_training_constant_0.2.png, id=133, 578.16pt x 433.62
+
+Underfull \vbox (badness 2103) has occurred while \output is active []
+
+ [4 <../data/plot/q_learning_constant_0.2.png> <../data/plot/q_learning_GLIE.pn
+g>]
+<../data/plot/heatmap_full_training_constant_0.2.png, id=144, 578.16pt x 433.62
 pt>
 File: ../data/plot/heatmap_full_training_constant_0.2.png Graphic file (type pn
 g)
 <use ../data/plot/heatmap_full_training_constant_0.2.png>
 Package pdftex.def Info: ../data/plot/heatmap_full_training_constant_0.2.png  u
-sed on input line 186.
+sed on input line 193.
 (pdftex.def)             Requested size: 198.7425pt x 149.0565pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<../data/plot/heatmap_full_training_GLIE.png, id=134, 578.16pt x 433.62pt>
+<../data/plot/heatmap_full_training_GLIE.png, id=145, 578.16pt x 433.62pt>
 File: ../data/plot/heatmap_full_training_GLIE.png Graphic file (type png)
 <use ../data/plot/heatmap_full_training_GLIE.png>
 Package pdftex.def Info: ../data/plot/heatmap_full_training_GLIE.png  used on i
-nput line 192.
+nput line 199.
 (pdftex.def)             Requested size: 198.7425pt x 149.0565pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[4 <../data/plot/q_learning_constant_0.2.png> <../data/plot/q_learning_GLIE.png
->]
 <../data/plot/heatmap_initial_training_constant_0.2.png, id=146, 578.16pt x 433
 .62pt>
 File: ../data/plot/heatmap_initial_training_constant_0.2.png Graphic file (type
  png)
 <use ../data/plot/heatmap_initial_training_constant_0.2.png>
 Package pdftex.def Info: ../data/plot/heatmap_initial_training_constant_0.2.png
-  used on input line 207.
-(pdftex.def)             Requested size: 198.7425pt x 149.0565pt.
+  used on input line 215.
+(pdftex.def)             Requested size: 95.39554pt x 71.5442pt.
+<../data/plot/heatmap_initial_training_glie.png, id=147, 578.16pt x 433.62pt>
+File: ../data/plot/heatmap_initial_training_glie.png Graphic file (type png)
+<use ../data/plot/heatmap_initial_training_glie.png>
+Package pdftex.def Info: ../data/plot/heatmap_initial_training_glie.png  used o
+n input line 221.
+(pdftex.def)             Requested size: 95.39554pt x 71.5442pt.
 
+Underfull \vbox (badness 2027) has occurred while \output is active []
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<../data/plot/heatmap_after_one_episode_constant_0.2.png, id=148, 578.16pt x 43
+ [5 <../data/plot/heatmap_full_training_constant_0.2.png> <../data/plot/heatmap
+_full_training_GLIE.png>]
+<../data/plot/heatmap_after_one_episode_constant_0.2.png, id=157, 578.16pt x 43
 3.62pt>
 File: ../data/plot/heatmap_after_one_episode_constant_0.2.png Graphic file (typ
 e png)
 <use ../data/plot/heatmap_after_one_episode_constant_0.2.png>
 Package pdftex.def Info: ../data/plot/heatmap_after_one_episode_constant_0.2.pn
-g  used on input line 218.
-(pdftex.def)             Requested size: 198.7425pt x 149.0565pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<../data/plot/heatmap_halfway_constant_0.2.png, id=150, 578.16pt x 433.62pt>
+g  used on input line 237.
+(pdftex.def)             Requested size: 95.39554pt x 71.5442pt.
+<../data/plot/heatmap_after_one_episode_glie.png, id=158, 578.16pt x 433.62pt>
+File: ../data/plot/heatmap_after_one_episode_glie.png Graphic file (type png)
+<use ../data/plot/heatmap_after_one_episode_glie.png>
+Package pdftex.def Info: ../data/plot/heatmap_after_one_episode_glie.png  used 
+on input line 243.
+(pdftex.def)             Requested size: 95.39554pt x 71.5442pt.
+<../data/plot/heatmap_halfway_constant_0.2.png, id=162, 578.16pt x 433.62pt>
 File: ../data/plot/heatmap_halfway_constant_0.2.png Graphic file (type png)
 <use ../data/plot/heatmap_halfway_constant_0.2.png>
 Package pdftex.def Info: ../data/plot/heatmap_halfway_constant_0.2.png  used on
- input line 227.
-(pdftex.def)             Requested size: 198.7425pt x 149.0565pt.
+ input line 256.
+(pdftex.def)             Requested size: 95.39554pt x 71.5442pt.
+File: ../data/plot/heatmap_halfway_constant_0.2.png Graphic file (type png)
+<use ../data/plot/heatmap_halfway_constant_0.2.png>
+Package pdftex.def Info: ../data/plot/heatmap_halfway_constant_0.2.png  used on
+ input line 262.
+(pdftex.def)             Requested size: 95.39554pt x 71.5442pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [5 <../data/plot/heatmap_full_training_constant_0.2.png> <../data/plot/heatmap
-_full_training_GLIE.png>] [6 <../data/plot/heatmap_initial_training_constant_0.
-2.png> <../data/plot/heatmap_after_one_episode_constant_0.2.png> <../data/plot/
-heatmap_halfway_constant_0.2.png>]
-<../data/plot/heatmap_full_training_zero_epsilon.png, id=167, 578.16pt x 433.62
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[6 <../data/plot/heatmap_initial_training_constant_0.2.png> <../data/plot/heatm
+ap_initial_training_glie.png> <../data/plot/heatmap_after_one_episode_constant_
+0.2.png> <../data/plot/heatmap_after_one_episode_glie.png> <../data/plot/heatma
+p_halfway_constant_0.2.png>]
+<../data/plot/heatmap_full_training_zero_epsilon.png, id=178, 578.16pt x 433.62
 pt>
 File: ../data/plot/heatmap_full_training_zero_epsilon.png Graphic file (type pn
 g)
 <use ../data/plot/heatmap_full_training_zero_epsilon.png>
 Package pdftex.def Info: ../data/plot/heatmap_full_training_zero_epsilon.png  u
-sed on input line 249.
+sed on input line 288.
 (pdftex.def)             Requested size: 198.7425pt x 149.0565pt.
-<../data/plot/heatmap_full_training_zero_epsilon_fifty_initial.png, id=168, 578
+<../data/plot/heatmap_full_training_zero_epsilon_fifty_initial.png, id=179, 578
 .16pt x 433.62pt>
 File: ../data/plot/heatmap_full_training_zero_epsilon_fifty_initial.png Graphic
  file (type png)
 <use ../data/plot/heatmap_full_training_zero_epsilon_fifty_initial.png>
 Package pdftex.def Info: ../data/plot/heatmap_full_training_zero_epsilon_fifty_
-initial.png  used on input line 256.
+initial.png  used on input line 295.
 (pdftex.def)             Requested size: 198.7425pt x 149.0565pt.
  [7 <../data/plot/heatmap_full_training_zero_epsilon.png> <../data/plot/heatmap
 _full_training_zero_epsilon_fifty_initial.png>]
@@ -719,13 +751,13 @@ Package rerunfilecheck Info: File `example.out' has not changed.
 (rerunfilecheck)             Checksum: 2C0C1D489FDE43FA21A6FC65D60FFA31;3141.
  ) 
 Here is how much of TeX's memory you used:
- 12842 strings out of 478994
- 193257 string characters out of 5858184
- 496113 words of memory out of 5000000
- 30093 multiletter control sequences out of 15000+600000
+ 12861 strings out of 478994
+ 194050 string characters out of 5858184
+ 497235 words of memory out of 5000000
+ 30107 multiletter control sequences out of 15000+600000
  416675 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 86i,8n,88p,512b,369s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 86i,8n,88p,512b,397s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
 xlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texl
@@ -734,10 +766,10 @@ e/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive
 /2021/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2021/texm
 f-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2021/texmf-dist/fon
 ts/type1/urw/times/utmri8a.pfb>
-Output written on example.pdf (8 pages, 463762 bytes).
+Output written on example.pdf (8 pages, 618380 bytes).
 PDF statistics:
- 229 PDF objects out of 1000 (max. 8388607)
- 184 compressed objects within 2 object streams
- 47 named destinations out of 1000 (max. 500000)
- 221 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 242 PDF objects out of 1000 (max. 8388607)
+ 190 compressed objects within 2 object streams
+ 49 named destinations out of 1000 (max. 500000)
+ 236 words of extra memory for PDF output out of 10000 (max. 10000000)
 

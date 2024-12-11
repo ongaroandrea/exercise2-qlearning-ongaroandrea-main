@@ -108,6 +108,13 @@ where
 Q-learning is a model-free algorithm. We can think of model-free algorithms as trial-and-error methods. The agent explores the environment and learns from outcomes of the actions directly, without constructing an internal model or a Markov Decision Process.
 In the beginning, the agent knows the possible states and actions in an environment. Then the agent discovers the state transitions and rewards by exploration.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{../data/images/Q-learning-8.png}
+	\caption{Q-value estimation}
+	\label{fig:q_learning}
+\end{figure}
+
 \subsubsection{Exploration vs. Exploitation Tradeoff}
 The agent tries to discover its environment. During these trials, an agent has a set of actions to select from. Some of the actions are previously selected and the agent might guess the outcome. On the other hand, some actions are never taken before.\\ \\
 The concept of exploiting what the agent already knows versus exploring a random action is called the exploration-exploitation trade-off.
@@ -196,42 +203,75 @@ Analyzing  the full training heatmaps, one for the constant epsilon strategy (Fi
 
 Next, the focus will be on analyzing the constant epsilon case, specifically examining the Q-value heatmap at different stages of the training: before training, after a single episode, and after half of the episodes.
 
-Although the heatmaps differ across the different value of epsilon, the general trend is consistent. These heatmaps can be found in the data/plots folder for further analysis.
+The general trend is consistent. These heatmaps can be found in the data/plots folder for further analysis.
 
 
 \subsubsection{Before training}
 Before training the heatmap is likely flat, with no clear structure. All state-action pairs have equal zero Q -values, meaning  the value function is uniform across states. The agent has no prior knowledge of the environment.
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_initial_training_constant_0.2.png}
-	\caption{Heatmap in the initial state}
-	\label{fig:heatmap_init}
+\begin{figure}[!htb]
+	\begin{minipage}{0.48\textwidth}
+		\centering
+		\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_initial_training_constant_0.2.png}
+		\caption{Heatmap in the initial state}
+		\label{fig:heatmap_init}
+	\end{minipage}\hfill
+	\begin{minipage}{0.48\textwidth}
+		\centering
+		\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_initial_training_glie.png}
+		\caption{Heatmap in the initial state}
+		\label{fig:heatmap_init}
+	\end{minipage}
 \end{figure}
+
+
 
 \subsubsection{After one episode}
 After one episode some regions of the heatmap may begin to show slightly higher values, particularly in states visited during the episode. The updates are sparse and localized around the trajectory the agent followed during the episode. 
 Unvisited states retain their initial values, while the agent updates the Q-values for the specific states and actions it encountered, thereby improving its estimate of  V(s)  in those regions.
 As a result, most of the state space remains unexplored, leading to minimal structure in the heatmap. See figure \ref{fig:heatmap_costant_init}
-\begin{figure}[h]
+
+\begin{figure}[!htb]
+	\begin{minipage}{0.48\textwidth}
 	\centering
 	\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_after_one_episode_constant_0.2.png}
-	\caption{Heatmap after one single episode}
+	\caption{Heatmap after one single episode \\ using $\epsilon = 0.2$}
 	\label{fig:heatmap_costant_init}
+	\end{minipage}\hfill
+	\begin{minipage}{0.48\textwidth}
+	\centering
+	\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_after_one_episode_glie.png}
+	\caption{Heatmap after one single episode \\ using Formula \ref{formula:epsilon}}
+	\label{fig:heatmap_costant_init}
+	\end{minipage}
 \end{figure}
 
 \subsubsection{Half-way training}
 The heatmap begins to take shape, revealing a clearer distinction between “good” and “bad” states. High-value regions correspond to states that are closer to the goal or lead to higher rewards, while low-value regions represent states where the agent anticipates poor outcomes or failures. Some areas may still appear noisy or less structured, particularly in regions that have been underexplored. See figure \ref{fig:heatmap_costant_half}
+
+
+\begin{figure}[!htb]
+	\begin{minipage}{0.48\textwidth}
+		\centering
+		\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_halfway_constant_0.2.png}
+		\caption{Halfway Training Heatmap  \\ using $\epsilon = 0.2$}
+		\label{fig:heatmap_costant_half}
+	\end{minipage}\hfill
+	\begin{minipage}{0.48\textwidth}
+		\centering
+		\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_halfway_constant_0.2.png}
+		\caption{Halfway Training Heatmap  \\ using Formula \ref{formula:epsilon}}
+		\label{fig:heatmap_costant_half}
+	\end{minipage}
+\end{figure}
+
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.5\linewidth]{../data/plot/heatmap_halfway_constant_0.2.png}
-	\caption{Halfway Training Heatmap}
-	\label{fig:heatmap_costant_half}
+
 \end{figure}
 
 
 \subsection{Epsilon zero}
-The final strategy analyzed in this article involves setting epsilon to 0. With epsilon set to 0, there is no exploration, meaning the agent relies solely on its current knowledge without attempting to discover new states or actions. Without exploration, there is no guarantee that the agent can sufficiently learn the environment to identify the optimal policy.
+The final strategy analyzed in this article involves setting epsilon to 0. With epsilon set to 0, there is no exploration, meaning the agent relies solely on its current knowledge without attempting to discover new states or actions. Without exploration, there is no guarantee that the agent can sufficiently learn the environment to identify the optimal policy and it may stuck in \textbf{sub-optimal policy}.\\
 In this subsection, the scenario of epsilon equal to zero is examined under two different cases:
 \begin{itemize}
 	\item keeping the initial Q-function values at zero;
@@ -239,10 +279,9 @@ In this subsection, the scenario of epsilon equal to zero is examined under two 
 \end{itemize}
 
 \subsubsection{Performance}
-The performance is poor in both cases; however, the strategy with higher initialization yields slightly better results, with longer episode durations.
+If Q-values are initialized to 50, the agent assumes it can achieve high rewards from all state-action pairs initially and the convergence will be slower because the updates of the Q-values will take longer to overwrite the inflated values.
 
-- In which case does the model perform better?
-- Why is this the case? How does the initialization of Q values aﬀect exploration?
+The performance is poor in both cases; however, the strategy with higher initialization yields slightly better results, with longer episode durations. 
 
 \begin{figure}[h]
 	\centering
@@ -271,7 +310,12 @@ To overcome this problem there is an alternative that involves the use of the fu
 % Divide the continuous state space into discrete bins (grids).
 % Each bin represents a discrete state, and standard Q-learning operates on this discretized state space.
 \subsection{Continuous action spaces}
-Risposta da dare studiando molto di più.
+% https://ai.stackexchange.com/questions/12255/can-q-learning-be-used-for-continuous-state-or-action-spaces
+The problem is can be understood easily looking the formula, the part about the TD Target (See Figure \ref{fig:q_learning})
+The process for evaluating the maximum becomes less efficient and less accurate the larger the space that it needs to check.\\
+If your actions are continuous, and therefore infinite, you can’t just look up which action produces the maximum q-value because there are an infinite number of actions to scan.
+Unless you discretise the action space, then this becomes very unwieldy.
+There are variants of Q-learning which seek to solve this problem by not only approximating Q, but also approximating the max operation. 
 
 %===============================================================================
 
