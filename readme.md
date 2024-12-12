@@ -1,23 +1,64 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/jAhWf3cy)
-# Exercise 2
-Exercise 2 - Q-learning for cartpole.
+# Exercise 2 - Q-Learning for CartPole
 
-See assignment document for instructions.
+This repository contains the implementation of Exercise 2 for Q-Learning applied to the CartPole environment.
 
+## Overview
 
-Second exercise
+This exercise builds upon the concepts of the q-learning. It consists of four different way to complete the experiment, each using a methodology for exploration and Q-table initialization.
 
-Preliminary functione explained in the first exercise
+## Methodologies
 
-Two phase:
-Training with the generation of the plots and of the model trained according to the parameters setted.
+The behavior of the Q-learning agent depends on the value of the SCHEDULE constant:
 
-- Costant epsilon 
-    - Training
-    - Testing
-    
+- CONSTANT:
 
-- GLIE Schedule
-    - Training 
-    - Testing 
+   - Epsilon is fixed at 0.2.
+   - Q-table is initialized with all zeros.
 
+- GLIE:
+
+   - Epsilon decreases according to a specific formula, reaching ￼ after 20,000 episodes.
+   - Q-table is initialized with all zeros.
+
+- ZERO:
+
+   - Epsilon is set to 0 (no exploration).
+   - Q-table is initialized with all zeros.
+
+- ZERO_FIFTY:
+
+   - Epsilon is set to 0.
+   - Q-table is initialized with all values set to 50.
+
+For each methodology, the agent can be either trained or tested by setting the value of the MODE constant.
+
+## Repository Structure
+
+<b>data/ </b>
+
+Contains data generated or used during the experiment:
+
+- <b>images/:</b> Contains images (sourced from the internet) used to explain concepts in the accompanying documentation.
+- <b>log/:</b> CSV files for analyzing reward values across episodes.
+- <b>model/:</b> Saved models for each phase, including:
+
+   - Q-table snapshots before training, after one episode, halfway through training, and at the end of training.
+   - Reward progression data for each phase.
+
+- <b> plot/:</b> Contains plots generated during the exercise, including:
+
+   - Reward progression over episodes for each phase.
+   - Heatmaps of the Q-value function before training, after one episode, halfway through training, and at the end of training.
+
+<b>qlearning.py</b>
+
+The main script containing the implementation of the Q-learning algorithm and the logic for each phase.
+
+## Instructions
+
+Refer to the assignment document for detailed instructions on running and evaluating the experiment.
+
+## Contact me
+
+For inquiries or issues, please reach out to the maintainer:
+Email: s329706@studenti.polito.it

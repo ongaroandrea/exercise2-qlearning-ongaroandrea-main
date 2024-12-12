@@ -1,9 +1,6 @@
 import gym
 import numpy as np
 from matplotlib import pyplot as plt
-from time import sleep
-import random
-import seaborn as sns
 import pandas as pd
 
 import sys
@@ -15,7 +12,7 @@ env.seed(321)
 
 # Whether to perform training or use the stored .npy file
 MODE = "TRAINING"  # TRAINING, TEST
-SCHEDULE = "GLIE"  # CONSTANT, GLIE, ZERO, ZERO_FIFTY
+SCHEDULE = "ZERO_FIFTY"  # CONSTANT, GLIE, ZERO, ZERO_FIFTY
 episodes = 20000
 test_episodes = 100
 num_of_actions = 2  # 2 discrete actions for Cartpole
@@ -28,12 +25,9 @@ th_min, th_max = -0.3, 0.3
 av_min, av_max = -4, 4
 
 # Parameters
-gamma = 0.98 # Discount factor
-alpha = 0.1 # Learning rate
+gamma = 0.98  # Discount factor
+alpha = 0.1  # Learning rate
 constant_eps = 0.2  # Epsilon for epsilon-greedy policy
-if SCHEDULE == "ZERO" or SCHEDULE == "ZERO_FIFTY":
-    constant_eps = 0
-
 b = 2221
 
 # Create discretization grid
@@ -54,6 +48,35 @@ q_grid_initial, q_grid_after_one_episode, q_grid_halfway = (
     None,
     None,
 )
+
+
+def name_exp(schedule, epsilon=None):
+    """
+    Get the name of the experiment
+    Args:
+        schedule: schedule of the experiment
+
+    Returns:
+    """
+    if schedule == "CONSTANT":
+        return "constant" + "_" + str(epsilon)
+    if schedule == "GLIE":
+        return "GLIE"
+    if schedule == "ZERO":
+        return "zero_epsilon"
+    if schedule == "ZERO_FIFTY":
+        return "zero_epsilon_fifty_initial"
+
+
+model = name_exp(SCHEDULE, constant_eps)
+
+if MODE == "TEST":
+    # Check if the Q-value array exists
+    try:
+        q_grid = np.load("./data/model/q_values_" + model + ".npy")
+    except FileNotFoundError:
+        print("Q-value file not found. Exiting...")
+        sys.exit()
 
 
 def find_nearest(array, value):
@@ -85,13 +108,12 @@ def get_cell_index(state):
     return x, v, th, av
 
 
-def get_action(state, q_values, epsilon, num_of_actions=2, greedy=False):
+def get_action(state, q_values, greedy=False):
     """
     Returns the action to take in a state using epsilon-greedy policy
     Args:
         state: current state
         q_values: Q-value array
-        epsilon: epsilon value for epsilon-greedy policy
         greedy: whether to act greedily
 
     Returns:
@@ -101,10 +123,7 @@ def get_action(state, q_values, epsilon, num_of_actions=2, greedy=False):
     x, v, th, av = get_cell_index(state)
 
     if greedy:  # TEST -> greedy policy
-        # TODO: greedy w.r.t. q_grid
-        best_action_estimated = np.argmax(q_values[x, v, th, av, :])
-
-        return best_action_estimated
+        return np.argmax(q_values[x, v, th, av, :])  # Best action estimated
 
     else:  # TRAINING -> epsilon-greedy policy
         if np.random.rand() < epsilon:
@@ -117,7 +136,7 @@ def get_action(state, q_values, epsilon, num_of_actions=2, greedy=False):
             return np.argmax(q_values[x, v, th, av, :])  # Best action estimated
 
 
-def update_q_value(old_state, action, new_state, reward, done, q_array, before=False):
+def update_q_value(old_state, action, new_state, reward, done, q_array):
     """
     Update Q-value of the state-action pair using the Bellman equation
     Args:
@@ -136,7 +155,6 @@ def update_q_value(old_state, action, new_state, reward, done, q_array, before=F
 
     # Target value used for updating our current Q-function estimate at Q(old_state, action)
     if done is True:
-        reward = -300 if before else reward
         target_value = reward  # HINT: if the episode is finished, there is not next_state. Hence, the target value is simply the current reward.
     else:
         # TODO: implement the Bellman equation
@@ -146,9 +164,9 @@ def update_q_value(old_state, action, new_state, reward, done, q_array, before=F
                 new_cell_index[1],
                 new_cell_index[2],
                 new_cell_index[3],
-                :
+                :,
             ]
-        )
+        )  # TODO
 
     # Update Q value
     q_grid[
@@ -157,7 +175,13 @@ def update_q_value(old_state, action, new_state, reward, done, q_array, before=F
         old_cell_index[2],
         old_cell_index[3],
         action,
-    ] = alpha * (
+    ] = q_array[
+        old_cell_index[0],
+        old_cell_index[1],
+        old_cell_index[2],
+        old_cell_index[3],
+        action,
+    ] + alpha * (
         target_value
         - q_array[
             old_cell_index[0],
@@ -166,27 +190,9 @@ def update_q_value(old_state, action, new_state, reward, done, q_array, before=F
             old_cell_index[3],
             action,
         ]
-    )
+    )  # TODO
 
     return
-
-
-def name_exp(schedule, epsilon=None):
-    """
-    Get the name of the experiment
-    Args:
-        schedule: schedule of the experiment
-
-    Returns:
-    """
-    if schedule == "CONSTANT":
-        return "constant" + "_" + str(epsilon)
-    if schedule == "GLIE":
-        return "GLIE"
-    if schedule == "ZERO":
-        return "zero_epsilon"
-    if schedule == "ZERO_FIFTY":
-        return "zero_epsilon_fifty_initial"
 
 
 def compute_heatmap(q_grid):
@@ -227,9 +233,11 @@ def plot_heatmap(heatmap, title, x_min, x_max, y_min, y_max, path=None):
         cmap="viridis",
     )
     plt.colorbar(label="Value Function")
-    plt.xlabel("Position of the cart")  # Position of the cart
-    plt.ylabel("Angle of the pole")  # Angle of the pole
-    plt.title(title)
+    plt.xlabel("Position of the cart", fontsize=20)  # Position of the cart
+    plt.ylabel("Angle of the pole", fontsize=20)  # Angle of the pole
+    plt.xticks(fontsize=20)
+    plt.yticks(fontsize=20)
+    plt.title(title, fontsize=20)
     if path is not None:
         plt.savefig(path)
         print("Heatmap saved to", path)
@@ -241,21 +249,12 @@ def save_model(path, q_values):
     np.save(path, q_values)
     print("Model saved to", path)
 
+
 def save_data(path, data):
-    #Save data to csv
+    # Save data to csv
     data.to_csv(path, index=False)
     print("Data saved to", path)
 
-
-model = name_exp(SCHEDULE, constant_eps)
-
-if MODE == "TEST":
-    # Check if the Q-value array exists
-    try:
-        q_grid = np.load("./data/model/q_values_" + model + ".npy")
-    except FileNotFoundError:
-        print("Q-value file not found. Exiting...")
-        sys.exit()
 
 # Training loop
 ep_lengths, epl_avg = [], []
@@ -272,25 +271,25 @@ for ep in range(episodes + test_episodes):
     epsilon = constant_eps  # TODO: change to GLIE schedule (task 3.1) or 0 (task 3.3)
     if SCHEDULE == "GLIE":
         epsilon = b / (b + ep)
-        #print("Epsilon:", epsilon)
+    if SCHEDULE == "ZERO" or SCHEDULE == "ZERO_FIFTY":
+        constant_eps = 0
 
     total_reward = 0
     while not done:
-        action = get_action(state, q_grid, epsilon, greedy=test)
+        action = get_action(state, q_grid, greedy=test)
         new_state, reward, done, _ = env.step(action)
         total_reward += reward  # Accumulate reward
         if not test:
-            update_q_value(state, action, new_state, reward, done, q_grid, before=steps < 170 and done)
+            update_q_value(state, action, new_state, reward, done, q_grid)
         else:
-            print('Test episode:', ep)
-            #env.render()
+            print("Testing episode")
+            # env.render()
 
         state = new_state
         steps += 1
 
     ep_lengths.append(steps)
     epl_avg.append(np.mean(ep_lengths[max(0, ep - 500) :]))
-    std_dev.append(np.std(ep_lengths[max(0, ep - 500) :]))
     if ep % 200 == 0:
         print(
             "Episode {}, average timesteps: {:.2f}".format(
@@ -303,19 +302,17 @@ for ep in range(episodes + test_episodes):
     elif ep == episodes // 2:
         q_grid_halfway = q_grid.copy()  # Halfway through training
 
-# Print the average reward and standard deviation
-print("Average reward episodes:", np.mean(ep_lengths[:episodes]))
-print("Standard deviation episodes:", np.std(ep_lengths[:episodes]))
+if MODE == "TEST":
+    # Print the average reward and standard deviation
+    print("Average reward episodes:", np.mean(ep_lengths))
+    sys.exit()
 
 # Print the average reward and standard deviation for the test episodes
+print("Average reward episodes:", np.mean(ep_lengths[:episodes]))
 print("Average reward test episodes:", np.mean(ep_lengths[episodes:]))
-print("Standard deviation test episodes:", np.std(ep_lengths[episodes:]))
 
 # Save the log data
 save_data("./data/log/q_learning_" + model + ".csv", pd.DataFrame(ep_lengths))
-
-if MODE == "TEST":
-    sys.exit()
 
 # Save the Q-value array
 save_model("./data/model/q_values_" + model + ".npy", q_grid)
@@ -332,13 +329,15 @@ save_model("./data/model/q_values_halfway_" + model + ".npy", q_grid_halfway)
 # Plot the learning curve
 plt.plot(ep_lengths)
 plt.plot(epl_avg)
-plt.xlabel("Episodes")
-plt.ylabel("Reward")
-plt.title("Reward per Episode")
-plt.legend(["Reward Length", "500 Reward Average"])
+plt.xlabel("Episodes", fontsize=15)
+plt.ylabel("Reward", fontsize=15)
+plt.title("Training Episode Rewards")
+plt.legend(["Reward", "500 Reward Average"])
 plt.grid()
 plt.xlim(0, episodes + test_episodes)
-plt.ylim(0, 210)
+plt.ylim(0, 200)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
 # Save the plot
 plt.savefig("data/plot/q_learning_" + model + ".png")
 print("Plot saved to data/plot/q_learning_" + model + ".png")
@@ -391,7 +390,7 @@ value_function_2d = compute_heatmap(q_grid_halfway)
 # Plot the heatmap
 plot_heatmap(
     value_function_2d,
-    "Value Function Halfway Through Training",
+    "Value Function Half Training",
     x_min,
     x_max,
     v_min,
